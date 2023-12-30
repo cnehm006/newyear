@@ -6,15 +6,22 @@ function setup() {
 }
 
 function getCountdownTime() {
-    let now = new Date()
-    let hours = 23 - now.getHours()
-    let minutes = 60 - now.getMinutes()
-    let seconds = 60 - now.getSeconds()
-    if (hours < 10) hours = `0${hours}`
-    if (minutes < 10) minutes = `0${minutes}`
-    if (seconds < 10) seconds = `0${seconds}`
-    return `${hours}:${minutes}:${seconds}`
+    var now = new Date();
+    var newYear = new Date(now.getFullYear() + 1, 0, 1, 0, 0, 0);
+    if (now.getMonth() == 0 && now.getDate() == 1) {
+        newYear.setFullYear(newYear.getFullYear() + 1);
+    }
+    var diff = newYear - now;
+
+    var hours = Math.floor(diff / (1000 * 60 * 60));
+    diff -= hours * (1000 * 60 * 60);
+    var minutes = Math.floor(diff / (1000 * 60));
+    diff -= minutes * (1000 * 60);
+    var seconds = Math.floor(diff / 1000);
+
+    return [hours, minutes, seconds].map(unit => unit.toString().padStart(2, '0')).join(':');
 }
+
 
 function draw() {
     background(0,0,0,25)
